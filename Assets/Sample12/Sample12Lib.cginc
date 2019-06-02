@@ -15,17 +15,6 @@ struct v2f
 float4 _MainColor;
 float4 _SpecularColor;
 float  _Shiness;
-float  _Fresnel;
-
-float fresnelSchlick(float3 view, float3 normal, float fresnel)
-{
-    return saturate(fresnel + (1 - fresnel) * pow(1 - dot(view, normal), 5));
-}
-
-float fresnelFast(float3 view, float3 normal, float fresnel)
-{
-    return saturate(fresnel + (1 - fresnel) * exp(-6 * dot(view, normal)));
-}
 
 v2f vert(appdata_base v)
 {
@@ -51,16 +40,13 @@ fixed4 frag(v2f i) : SV_Target
 
     float  diffuse  = saturate(dot(normal, light));
     float  specular = pow(saturate(dot(normal, hlf)), _Shiness);
-    float  fresnel  = fresnelFast(view, normal, _Fresnel);
     float3 ambient  = ShadeSH9(half4(normal, 1));
 
     fixed4 color = diffuse * _MainColor * _LightColor0 * attenuation
                  + specular * _SpecularColor * _LightColor0 * attenuation;
 
-    color.rgb += ambient * _MainColor
-               + ambient * _SpecularColor * fresnel;
+    color.rgb += ambient * _MainColor;
 
-    // return fresnel;
     return color;
 }
 

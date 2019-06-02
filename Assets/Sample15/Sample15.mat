@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Sample15
-  m_Shader: {fileID: 4800000, guid: 2371209a4a7814241b72db6e9290ed0f, type: 3}
+  m_Shader: {fileID: 4800000, guid: e97c1deb79205cb409b11b284a8119cd, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -60,16 +60,19 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _FatParam: 0.006
     - _Fresnel: 0.25
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _Metalic: 0
     - _Metallic: 1
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _RimPower: 0.687
     - _Roughness: 0.15
-    - _Shiness: 150
+    - _Shiness: 6.2
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -78,5 +81,6 @@ Material:
     m_Colors:
     - _Color: {r: 0, g: 0.21379304, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _MainColor: {r: 1, g: 0.69803923, b: 0, a: 1}
+    - _MainColor: {r: 1, g: 0.7, b: 0, a: 1}
+    - _RimColor: {r: 1, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 0.8352941, b: 0.5058824, a: 1}

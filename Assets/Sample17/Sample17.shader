@@ -4,13 +4,12 @@
     {
         [NoScaleOffset] _MainTex      ("Texture",    2D) = "white" {}
         [NoScaleOffset] _OcclusionTex ("Occulusion", 2D) = "white" {}
-        [NoScaleOffset] _NormalMap    ("Normal Map", 2D) = "bump"  {}
         _MainColor     ("Main Color",     Color) = (1, 1, 1, 1)
         _SpecularColor ("Specular Color", Color) = (1, 1, 1, 1)
         _Metallic      ("Metallic",  Range(0, 1.0)) = 0
         _Roughness     ("Roughness", Range(0, 1.0)) = 0
         _Fresnel       ("Fresnel",   Range(0, 1.0)) = 0
-        _Occlusion     ("Occlusion", Range(0, 5.0)) = 1
+        _Occlusion     ("Occlusion", Range(0, 5.0)) = 0
     }
 
     SubShader

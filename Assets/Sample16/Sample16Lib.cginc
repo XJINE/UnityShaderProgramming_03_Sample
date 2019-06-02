@@ -11,18 +11,13 @@ struct v2f
     float4 vertex  : SV_POSITION;
     float3 vertexW : TEXCOORD0;
     float3 normal  : TEXCOORD1;
-    float2 uv      : TEXCOORD2;
 };
-
-sampler2D _MainTex;
-sampler2D _OcclusionTex;
 
 float4 _MainColor;
 float4 _SpecularColor;
 float  _Metallic;
 float  _Roughness;
 float  _Fresnel;
-float  _Occlusion;
 
 v2f vert(appdata_base v)
 {
@@ -31,7 +26,6 @@ v2f vert(appdata_base v)
     o.vertex  = UnityObjectToClipPos(v.vertex);
     o.vertexW = mul(unity_ObjectToWorld, v.vertex);
     o.normal  = UnityObjectToWorldNormal(v.normal);
-    o.uv      = v.texcoord;
 
     return o;
 }
@@ -60,17 +54,16 @@ fixed4 frag(v2f i) : SV_Target
     float  specular = saturate(dTerm * gTerm * fTerm / (dotNL * dotNV * 4) * dotNL);
     float3 ambient  = ShadeSH9(half4(normal, 1));
 
-    fixed4 baseColor     = _MainColor * tex2D(_MainTex, i.uv);
     fixed4 lightColor    = _LightColor0 * attenuation;
-    fixed4 diffuseColor  = diffuse * baseColor * lightColor;
+    fixed4 diffuseColor  = diffuse * _MainColor * lightColor;
     fixed4 specularColor = specular * _SpecularColor * lightColor;
-    fixed4 ambientColor  = fixed4(0, 0, 0, 1);
+    fixed4 ambientColor  = fixed4(0 ,0, 0, 1);
 
     #ifdef UNITY_PASS_FORWARDBASE
 
-    float3 rflt  = normalize(reflect(-view, normal));
+    float3 rflt = normalize(reflect(-view, normal));
 
-    fixed4 diffuseColorI = baseColor;
+    fixed4 diffuseColorI = _MainColor;
            diffuseColorI.rgb *= ambient;
 
     fixed specCubeLevel = UNITY_SPECCUBE_LOD_STEPS * _Roughness;
@@ -81,9 +74,8 @@ fixed4 frag(v2f i) : SV_Target
 
     ambientColor = lerp(diffuseColorI, specularColorI, _Metallic);
     ambientColor.rgb += ambient * _SpecularColor * fTerm * (1 - _Roughness);
-    ambientColor.rgb *= pow(tex2D(_OcclusionTex, i.uv), _Occlusion); 
 
-    #endif
+    #endif // UNITY_PASS_FORWARDBASE
 
     fixed4 color = lerp(diffuseColor, specularColor, _Metallic) + ambientColor;
 

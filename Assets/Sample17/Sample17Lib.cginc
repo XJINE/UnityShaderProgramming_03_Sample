@@ -8,17 +8,14 @@
 
 struct v2f
 {
-    float4 vertex   : SV_POSITION;
-    float3 vertexW  : TEXCOORD0;
-    float3 normal   : TEXCOORD1;
-    float3 tangent  : TEXCOORD2;
-    float3 binormal : TEXCOORD3;
-    float2 uv       : TEXCOORD4;
+    float4 vertex  : SV_POSITION;
+    float3 vertexW : TEXCOORD0;
+    float3 normal  : TEXCOORD1;
+    float2 uv      : TEXCOORD2;
 };
 
 sampler2D _MainTex;
 sampler2D _OcclusionTex;
-sampler2D _NormalMap;
 
 float4 _MainColor;
 float4 _SpecularColor;
@@ -27,17 +24,14 @@ float  _Roughness;
 float  _Fresnel;
 float  _Occlusion;
 
-v2f vert(appdata_tan v)
+v2f vert(appdata_base v)
 {
     v2f o;
 
-    o.vertex   = UnityObjectToClipPos(v.vertex);
-    o.vertexW  = mul(unity_ObjectToWorld, v.vertex);
-    o.normal   = UnityObjectToWorldNormal(v.normal);
-    o.tangent  = UnityObjectToWorldDir(v.tangent);
-    o.binormal = cross(v.normal, v.tangent) * v.tangent.w;
-    o.binormal = UnityObjectToWorldDir(o.binormal);
-    o.uv       = v.texcoord;
+    o.vertex  = UnityObjectToClipPos(v.vertex);
+    o.vertexW = mul(unity_ObjectToWorld, v.vertex);
+    o.normal  = UnityObjectToWorldNormal(v.normal);
+    o.uv      = v.texcoord;
 
     return o;
 }
@@ -46,28 +40,20 @@ fixed4 frag(v2f i) : SV_Target
 {
     UNITY_LIGHT_ATTENUATION(attenuation, i, i.vertexW)
 
-    float3 normal   = normalize(i.normal);
-    float3 tangent  = normalize(i.tangent);
-    float3 binormal = normalize(i.binormal);
-    float3 light    = normalize(_WorldSpaceLightPos0.w == 0 ?
-                                _WorldSpaceLightPos0.xyz :
-                                _WorldSpaceLightPos0.xyz - i.vertexW);
-    float3 view     = normalize(_WorldSpaceCameraPos - i.vertexW);
-    float3 hlf      = normalize(light + view);
-
-    float3x3 worldToTangent = float3x3(tangent, binormal, normal);
-    float3x3 tangentToWorld = transpose(worldToTangent);
-
-    normal = normalize(mul(tangentToWorld, UnpackNormal(tex2D(_NormalMap, i.uv))));
-    //return fixed4(normal, 1);
+    float3 normal = normalize(i.normal);
+    float3 light  = normalize(_WorldSpaceLightPos0.w == 0 ?
+                              _WorldSpaceLightPos0.xyz :
+                              _WorldSpaceLightPos0.xyz - i.vertexW);
+    float3 view   = normalize(_WorldSpaceCameraPos - i.vertexW);
+    float3 hlf    = normalize(light + view);
 
     float dotNL = dot(normal, light);
     float dotNV = dot(normal, view);
     float dotNH = dot(normal, hlf);
     float dotVH = dot(view,   hlf);
 
-    float dTerm = dTermGGX(dotNH, _Roughness);
-    float gTerm = gTermSmithJoint(dotNL, dotNV, _Roughness);
+    float dTerm = dTermBeckmann(dotNH, _Roughness);
+    float gTerm = gTermTorrance(dotNL, dotNV, dotNH, dotVH);
     float fTerm = fresnelSchlick(dotNV, _Fresnel);
 
     float  diffuse  = saturate(dotNL);
@@ -78,7 +64,7 @@ fixed4 frag(v2f i) : SV_Target
     fixed4 lightColor    = _LightColor0 * attenuation;
     fixed4 diffuseColor  = diffuse * baseColor * lightColor;
     fixed4 specularColor = specular * _SpecularColor * lightColor;
-    fixed4 ambientColor  = fixed4(0 ,0, 0, 1);
+    fixed4 ambientColor  = fixed4(0, 0, 0, 1);
 
     #ifdef UNITY_PASS_FORWARDBASE
 

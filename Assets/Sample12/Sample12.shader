@@ -2,10 +2,9 @@
 {
     Properties
     {
-        _MainColor     ("Main Color",     Color) = (1, 1, 1, 1)
-        _SpecularColor ("Specular Color", Color) = (1, 1, 1, 1)
+        _MainColor     ("Main Color",     Color)  = (1, 1, 1, 1)
+        _SpecularColor ("Specular Color", Color)  = (1, 1, 1, 1)
         _Shiness       ("Shiness", Range(0, 150)) = 0
-        _Fresnel       ("Fresnel", Range(0, 1.0)) = 0
     }
 
     SubShader

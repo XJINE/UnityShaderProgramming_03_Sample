@@ -19,7 +19,6 @@ struct v2f
 sampler2D _MainTex;
 sampler2D _OcclusionTex;
 sampler2D _NormalMap;
-sampler2D _HeightMap;
 
 float4 _MainColor;
 float4 _SpecularColor;
@@ -27,7 +26,6 @@ float  _Metallic;
 float  _Roughness;
 float  _Fresnel;
 float  _Occlusion;
-float  _Height;
 
 v2f vert(appdata_tan v)
 {
@@ -60,8 +58,8 @@ fixed4 frag(v2f i) : SV_Target
     float3x3 worldToTangent = float3x3(tangent, binormal, normal);
     float3x3 tangentToWorld = transpose(worldToTangent);
 
-    float2 uv = i.uv + ParallaxOffset(tex2D(_HeightMap, i.uv), _Height, mul(worldToTangent, view));
-    normal = normalize(mul(tangentToWorld, UnpackNormal(tex2D(_NormalMap, uv))));
+    normal = normalize(mul(tangentToWorld, UnpackNormal(tex2D(_NormalMap, i.uv))));
+    //return fixed4(normal, 1);
 
     float dotNL = dot(normal, light);
     float dotNV = dot(normal, view);
@@ -76,9 +74,10 @@ fixed4 frag(v2f i) : SV_Target
     float  specular = saturate(dTerm * gTerm * fTerm / (dotNL * dotNV * 4) * dotNL);
     float3 ambient  = ShadeSH9(half4(normal, 1));
 
-    fixed4 baseColor     = _MainColor * tex2D(_MainTex, uv);
-    fixed4 diffuseColor  = diffuse * baseColor * _LightColor0 * attenuation;
-    fixed4 specularColor = specular * _SpecularColor * _LightColor0 * attenuation;
+    fixed4 baseColor     = _MainColor * tex2D(_MainTex, i.uv);
+    fixed4 lightColor    = _LightColor0 * attenuation;
+    fixed4 diffuseColor  = diffuse * baseColor * lightColor;
+    fixed4 specularColor = specular * _SpecularColor * lightColor;
     fixed4 ambientColor  = fixed4(0 ,0, 0, 1);
 
     #ifdef UNITY_PASS_FORWARDBASE

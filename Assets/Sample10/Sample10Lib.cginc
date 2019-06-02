@@ -13,8 +13,6 @@ struct v2f
 };
 
 float4 _MainColor;
-float4 _SpecularColor;
-float  _Shiness;
 
 v2f vert(appdata_base v)
 {
@@ -35,18 +33,12 @@ fixed4 frag(v2f i) : SV_Target
     float3 light  = normalize(_WorldSpaceLightPos0.w == 0 ?
                               _WorldSpaceLightPos0.xyz :
                               _WorldSpaceLightPos0.xyz - i.vertexW);
-    float3 view   = normalize(_WorldSpaceCameraPos - i.vertexW);
-    float3 rflt   = normalize(reflect(-light, normal));
-    //     rflt   = normalize(-light + normal * saturate(dot(normal, light)) * 2);
 
-    float  diffuse  = saturate(dot(normal, light));
-    float  specular = pow(saturate(dot(view, rflt)), _Shiness);
-    float3 ambient  = ShadeSH9(half4(normal, 1));
+    float  diffuse = saturate(dot(normal, light));
+    float3 ambient = ShadeSH9(half4(normal, 1));
 
-    fixed4 color = diffuse * _MainColor * _LightColor0 * attenuation
-                 + specular * _SpecularColor * _LightColor0 * attenuation;
-
-    color.rgb += ambient * _MainColor;
+    fixed4 color = diffuse * _MainColor * _LightColor0 * attenuation;
+           color.rgb += ambient * _MainColor;
 
     return color;
 }

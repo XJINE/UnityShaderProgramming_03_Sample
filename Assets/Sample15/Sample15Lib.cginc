@@ -57,25 +57,10 @@ fixed4 frag(v2f i) : SV_Target
     fixed4 lightColor    = _LightColor0 * attenuation;
     fixed4 diffuseColor  = diffuse * _MainColor * lightColor;
     fixed4 specularColor = specular * _SpecularColor * lightColor;
-    fixed4 ambientColor  = fixed4(0 ,0, 0, 1);
+    fixed4 ambientColor  = fixed4(0, 0, 0, 1);
 
-    #ifdef UNITY_PASS_FORWARDBASE
-
-    float3 rflt = normalize(reflect(-view, normal));
-
-    fixed4 diffuseColorI = _MainColor;
-           diffuseColorI.rgb *= ambient;
-
-    fixed specCubeLevel = UNITY_SPECCUBE_LOD_STEPS * _Roughness;
-
-    fixed4 specularColorI = UNITY_SAMPLE_TEXCUBE_LOD(unity_SpecCube0, rflt, specCubeLevel);
-           specularColorI.rgb = DecodeHDR(specularColorI, unity_SpecCube0_HDR);
-           specularColorI.rgb *= _SpecularColor;
-
-    ambientColor = lerp(diffuseColorI, specularColorI, _Metallic);
+    ambientColor.rgb += ambient * lerp(_MainColor, _SpecularColor, _Metallic);
     ambientColor.rgb += ambient * _SpecularColor * fTerm * (1 - _Roughness);
-
-    #endif // UNITY_PASS_FORWARDBASE
 
     fixed4 color = lerp(diffuseColor, specularColor, _Metallic) + ambientColor;
 
