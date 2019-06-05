@@ -33,9 +33,6 @@ fixed4 frag(v2f i) : SV_Target
                     _WorldSpaceLightPos0.xyz :
                     _WorldSpaceLightPos0.xyz - i.vertexW;
 
-    // NOTE:
-    // unity_SpotDirection only works in LiteMode = Vertex pass.
-
     float3 ldirection = normalize(_SpotLightDirection);
     float  llength    = length(light);
            light      = normalize(light);
@@ -44,13 +41,13 @@ fixed4 frag(v2f i) : SV_Target
     float  angleI     = angleO * 0.8;
            angleO     = cos(angleO * UNITY_PI / 180);
            angleI     = cos(angleI * UNITY_PI / 180);
-    float  angleA     = dot(light, -ldirection);
+    float  angle      = dot(light, -ldirection);
 
-    float  attenuation = angleA > angleO ? 1 : 0;
+    float  attenuation = angle > angleO ? 1 : 0;
            attenuation *= saturate(lerp(1, 0, llength / range));
            attenuation *= attenuation;
-           attenuation *= angleA < angleI ?
-                         (angleA - angleO) / (angleI - angleO) : 1;
+           attenuation *= angle < angleI ?
+                         (angle - angleO) / (angleI - angleO) : 1;
 
     float  diffuse = saturate(dot(normal, normalize(light)));
     float3 ambient = ShadeSH9(half4(normal, 1));

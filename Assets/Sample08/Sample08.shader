@@ -1,4 +1,4 @@
-﻿Shader "Sample/Sample08A"
+﻿Shader "Sample/Sample08"
 {
     Properties
     {
@@ -19,7 +19,7 @@
             #pragma vertex   vert
             #pragma fragment frag
 
-            #include "Sample08ALib.cginc"
+            #include "Sample08Lib.cginc"
 
             ENDCG
         }
@@ -38,7 +38,7 @@
             #pragma vertex   vert
             #pragma fragment frag
 
-            #include "Sample08ALib.cginc"
+            #include "Sample08Lib.cginc"
 
             ENDCG
         }

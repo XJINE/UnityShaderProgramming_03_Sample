@@ -1,5 +1,5 @@
-﻿#ifndef SAMPLE08ALIB_INCLUDED
-#define SAMPLE08ALIB_INCLUDED
+﻿#ifndef SAMPLE08LIB_INCLUDED
+#define SAMPLE08LIB_INCLUDED
 
 #include "UnityCG.cginc"
 #include "Lighting.cginc"
@@ -27,9 +27,7 @@ v2f vert(appdata_base v)
 
 fixed4 frag(v2f i) : SV_Target
 {
-    // NOTE:
-    // _LightPositionRange doesn't work.
-    // _unity_4LightAtten0 works in a Base pass.
+    // return fixed4(_WorldSpaceLightPos0.xyz, 1);
 
     float3 normal = normalize(i.normal);
     float3 light  = _WorldSpaceLightPos0.w == 0 ?
@@ -56,4 +54,4 @@ fixed4 frag(v2f i) : SV_Target
     return color;
 }
 
-#endif // SAMPLE08ALIB_INCLUDED
+#endif // SAMPLE08LIB_INCLUDED

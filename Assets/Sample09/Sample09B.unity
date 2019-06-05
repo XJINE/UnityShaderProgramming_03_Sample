@@ -199,7 +199,7 @@ Light:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 10
   m_Range: 2
-  m_SpotAngle: 20
+  m_SpotAngle: 25
   m_InnerSpotAngle: 1
   m_CookieSize: 10
   m_Shadows:

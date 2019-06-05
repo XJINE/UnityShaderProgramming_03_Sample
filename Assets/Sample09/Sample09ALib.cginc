@@ -33,9 +33,6 @@ fixed4 frag(v2f i) : SV_Target
                     _WorldSpaceLightPos0.xyz :
                     _WorldSpaceLightPos0.xyz - i.vertexW;
 
-    // NOTE:
-    // unity_SpotDirection only works in LiteMode = Vertex pass.
-
     float3 ldirection = normalize(_SpotLightDirection);
     float  llength    = length(light);
            light      = normalize(light);
