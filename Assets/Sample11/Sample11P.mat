@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Sample08A
-  m_Shader: {fileID: 4800000, guid: 0086c740c6eb59947a4184b6911696cc, type: 3}
+  m_Name: Sample11P
+  m_Shader: {fileID: 4800000, guid: 92f0763873ede0b469f038b11ec2998f, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -69,6 +69,7 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _RimPower: 0.687
+    - _Shiness: 10
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -77,5 +78,6 @@ Material:
     m_Colors:
     - _Color: {r: 0, g: 0.21379304, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _MainColor: {r: 1, g: 1, b: 1, a: 1}
+    - _MainColor: {r: 1, g: 0, b: 0, a: 1}
     - _RimColor: {r: 1, g: 0, b: 0, a: 1}
+    - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}

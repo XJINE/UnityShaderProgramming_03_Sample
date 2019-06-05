@@ -1,8 +1,10 @@
-﻿Shader "Sample/Sample08B"
+﻿Shader "Sample/Sample11P"
 {
     Properties
     {
-        _MainColor ("Main Color", Color) = (1, 1, 1, 1)
+        _MainColor     ("Main Color",     Color)  = (1, 1, 1, 1)
+        _SpecularColor ("Specular Color", Color)  = (1, 1, 1, 1)
+        _Shiness       ("Shiness", Range(0, 150)) = 0
     }
 
     SubShader
@@ -19,7 +21,7 @@
             #pragma vertex   vert
             #pragma fragment frag
 
-            #include "Sample08BLib.cginc"
+            #include "Sample11PLib.cginc"
 
             ENDCG
         }
@@ -35,10 +37,11 @@
 
             CGPROGRAM
 
+            #pragma multi_compile_fwdadd
             #pragma vertex   vert
             #pragma fragment frag
 
-            #include "Sample08BLib.cginc"
+            #include "Sample11PLib.cginc"
 
             ENDCG
         }
