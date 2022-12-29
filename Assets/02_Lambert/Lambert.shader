@@ -9,8 +9,14 @@
     {
         Pass
         {
+            // おおよそ反射光には2パターンあり、「鏡面反射光」と「拡散反射光」があります
+            // 「鏡面反射光」金属や鏡のように光を入射角と同じ角度で反射し、わずかに反射方向が変わるものもある
+            // 「拡散反射光」物体の表面に光が侵入した際に散乱し、あらゆる方向に均等に放射される
+
             Tags
             {
+                // Tagsを次のように変更すると、フォワードレンダリングに対応するシェーダになります
+                // Unity固有のものであり、光源を考慮したレンダリングする最も基本的な実装をする際に設定する
                 "LightMode" = "ForwardBase"
             }
 
@@ -42,8 +48,10 @@
             fixed4 frag(v2f i) : SV_Target
             {
                 float3 normal = normalize(i.normal);
+                // ここではDirectional Lightだけが置かれているので、その光の向き(光線ベクトル)を取得します
+                // _WorldSpaceLightPos0.xyzは光線ベクトルを取得しています
                 float3 light  = normalize(_WorldSpaceLightPos0.xyz);
-
+                // オブジェクトのピクセルが向いてる
                 float diffuse = saturate(dot(normal, light));
 
                 return diffuse * _MainColor;
