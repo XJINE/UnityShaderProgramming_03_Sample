@@ -42,10 +42,15 @@
 
             fixed4 frag(v2f i) : SV_Target
             {
+                // Lambertシェーディングでは、環境光を考慮しないなので影が著しく黒くなる
+                // その問題を解決する方法としてHalf-Lambertシェーディングがあります。
+                // 環境光のパラメータは持ちませんが、影になる部分をわずかに明るくします
+
                 float3 normal = normalize(i.normal);
                 float3 light  = normalize(_WorldSpaceLightPos0.xyz);
 
                 float diffuse = saturate(dot(normal, light));
+                // cosθの値に0.5を乗算して0.5を足して2乗して影を明るくしている。
                       diffuse = pow(diffuse * 0.5 + 0.5, 2);
 
                 return diffuse * _MainColor * _LightColor0;

@@ -31,12 +31,16 @@ fixed4 frag(v2f i) : SV_Target
 
     fixed4 color = diffuse * _MainColor * _LightColor0;
 
+    // Unityでは、現在のPassがForwardBaseであるとき、UNITY_PASS_FORWARDBASEというキーワードが有効になります
     #ifdef UNITY_PASS_FORWARDBASE
 
     color += unity_AmbientSky * _MainColor;
 
     #endif
 
+    // ShadeSH9関数はForwardBase以外のPassでは、(0, 0, 0)を返します。
+    // 内部的にUNITY_PASS_FORWARDBASEによる分岐を行っている
+    
     // float3 ambient = ShadeSH9(half4(normal, 1));
     // 
     // fixed4 color = diffuse * _MainColor * _LightColor0;

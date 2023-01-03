@@ -51,11 +51,14 @@
                 // ここではDirectional Lightだけが置かれているので、その光の向き(光線ベクトル)を取得します
                 // _WorldSpaceLightPos0.xyzは光線ベクトルを取得しています
                 float3 light  = normalize(_WorldSpaceLightPos0.xyz);
-                // オブジェクトのピクセルが向いてる
+                // オブジェクトのピクセルが向いてる法線と光の方向を内積し、そこの光の反射を計算する
+                // 単位ベクトルどうしの内積の結果はcosθとなるため、saturateを使用して0以下の値を0にする
                 float diffuse = saturate(dot(normal, light));
 
                 return diffuse * _MainColor;
             }
+
+            // このようにLambertの余弦則を使って拡散反射を表現するシェーダを「Lanbartシェーダ」と呼ぶ
 
             ENDCG
         }

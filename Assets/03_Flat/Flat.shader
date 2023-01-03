@@ -24,6 +24,12 @@
             struct v2f
             {
                                 float4 vertex : SV_POSITION;
+                // 球面などの法線の補完を任意的に無効化したい場合は、nointerpolation修飾子を使用する
+                // この画素単位で法線を補完する手法を「Phong補完」と呼び、
+                // この補完を使用したシェーディングを「Phongシェーディング」と呼ぶ。
+                // 逆に補完しないシェーディングを「Flatシェーディング」あるいは
+                // 「Constantシェーディング」と呼ぶ。
+                // ローポリ風の表現をしたい際に使える
                 nointerpolation float3 normal : TEXCOORD0;
             };
 

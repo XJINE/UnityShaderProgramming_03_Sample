@@ -7,6 +7,8 @@
 
     SubShader
     {
+        // このパスは1つ目の光源で行われるPass
+        // 基本的に一つの光源にひとつのPass
         Pass
         {
             Tags
@@ -46,6 +48,8 @@
                 float3 light  = normalize(_WorldSpaceLightPos0.xyz);
 
                 float  diffuse = saturate(dot(normal, light));
+                // 最初に行われるPassでのみ環境光を加算する
+                // そのため環境光のためのPassは存在しない
                 float3 ambient = ShadeSH9(half4(normal, 1));
 
                 fixed4 color = diffuse * _MainColor * _LightColor0;
@@ -57,6 +61,7 @@
             ENDCG
         }
 
+        // このパスは2つ目以降の光源がある際に行われるPass
         Pass
         {
             Tags
@@ -64,6 +69,7 @@
                 "LightMode" = "ForwardAdd"
             }
 
+            // 光は当てた分だけ明るくなるのでBlendは加算にする
             Blend One One
 
             CGPROGRAM

@@ -42,6 +42,10 @@
 
             fixed4 frag(v2f i) : SV_Target
             {
+                // 新たに出力に_LightColor0が乗算されている
+                // _LightColor0にはIntencityパラメータのが乗算されているため、乗算によって反射する光
+                // を求める手法は現実の光の挙動とは異なる点に注意
+
                 float3 normal = normalize(i.normal);
                 float3 light  = normalize(_WorldSpaceLightPos0.xyz);
 

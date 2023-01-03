@@ -7,6 +7,7 @@
 
     SubShader
     {
+        // どちらのPassも同じLibraryをインクルードしてシェーダを行っている。
         Pass
         {
             Tags

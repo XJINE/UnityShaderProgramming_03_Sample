@@ -33,6 +33,11 @@
             {
                 float3 normal = normalize(UnityObjectToWorldNormal(v.normal));
                 float3 light  = normalize(_WorldSpaceLightPos0.xyz);
+                // Groundシェーディングは、頂点単位で反射する色を決定しているため
+                // 画素ごとに計算しているPhongシェーディングよりも演算量は減っています
+                // デメリットとして特に影になる部分のポリゴンが目立ってしまう
+                // メリットは、軽くFlatよりも自然ということモバイルなどリソースが限られた際に、
+                // 背景などで使用できるかも
 
                 v2f o;
 
