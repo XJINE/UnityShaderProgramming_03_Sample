@@ -46,6 +46,9 @@ fixed4 frag(v2f i) : SV_Target
     float  attenuation = angle > angleO ? 1 : 0;
            attenuation *= saturate(lerp(1, 0, llength / range));
            attenuation *= attenuation;
+    // 減衰率にフォールオフを考慮する。アングルが規定値以下の場合アングルの外側に向けて減衰させている
+    // スポットライトは算出コストが高い
+    // この減衰処理が線形なのも算出コストが理由
            attenuation *= angle < angleI ?
                          (angle - angleO) / (angleI - angleO) : 1;
 
@@ -55,6 +58,7 @@ fixed4 frag(v2f i) : SV_Target
     fixed4 color = diffuse * _MainColor * _LightColor0 * attenuation;
            color.rgb += ambient * _MainColor;
 
+    
     return color;
 }
 
